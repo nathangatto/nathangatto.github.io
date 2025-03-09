@@ -482,6 +482,14 @@ footer {
   margin-left: 300px;
   padding: 15px;
 }
+
+.testimonals {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 15px;
+}
+
 .project-info h3 {
   font-size: 1.5em;
   font-weight: 300;
