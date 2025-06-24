@@ -455,7 +455,7 @@ footer {
 .education-block ul {
   padding: 0 0 0 15px;
 }
-#projects {
+#projects, #testimonials {
   padding: 50px 15px;
   border-bottom: 1px solid #dcd9d9;
   text-align: center;
@@ -464,30 +464,74 @@ footer {
   color: #2c2c2e;
   margin-bottom: 50px;
 }
-.project {
-  position: relative;
-  max-width: 900px;
-  margin: 0 auto 30px auto;
-  overflow: hidden;
-  background: #fff;
-  border-radius: 20px;
+.project{
+  display:flex;                 /* side-by-side on desktop */
+  gap:24px;
+  align-items:center;
+  max-width:900px;
+  margin:0 auto 48px;
+  padding:24px;
+  background:#fff;
+  border-radius:20px;
+  box-shadow:0 10px 20px rgba(0,0,0,.07);
 }
-.project-image {
-  float: left;
+/* ---------- QUICK FIX: make project text visible again ---------- */
+.project-info{
+  /* kill the legacy absolute positioning */
+  position:relative !important;
+  top:auto !important;
+  transform:none !important;
+  margin-left:0 !important;
+
+  /* keep the flex/text settings you want */
+  display:flex;
+  flex-direction:column;
+  text-align:left;
+  padding:0 15px;
+}
+
+.project-image{
+  flex:0 0 300px;               /* 300 px wide, no grow */
+}
+.project-thumb{
+  width:100%;                   /* fill wrapper */
+  height:200px;                 /* uniform crop */
+  object-fit:cover;             /* maintain aspect, crop overflow */
+  border-radius:15px;
+}
+@media (max-width:768px){
+  .project{
+    flex-direction:column;      /* stack image on top */
+    text-align:left;
+  }
+  .project-image{
+    width:100%;
+    flex:0 0 auto;
+  }
+  .project-thumb{
+    height:auto;                /* natural height on small screens */
+  }
 }
 .project-info {
+  display: flex;
+  flex-direction: column;
   position: absolute;
+  text-align: left;
+  align-items: flex-start;
   top: 50%;
   transform: translateY(-50%);
   margin-left: 300px;
   padding: 15px;
 }
 
-.testimonals {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  padding: 15px;
+.testimonals{
+  /* kill legacy absolute positioning */
+  position:relative !important;
+  top:auto !important;
+  transform:none !important;
+
+  /* keep existing padding/typography */
+  padding:15px;
 }
 
 .project-info h3 {
@@ -754,4 +798,98 @@ footer {
     font-size: 0.9em;
     padding: 5px 10px;
   }
+}
+
+/* ---------- hover animation for cards with .shadow-large ---------- */
+.shadow-large{
+  transition:transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.shadow-large:hover{
+  transform:translateY(-6px) scale(1.02);                    /* gentle lift */
+  box-shadow:0 14px 28px rgba(0,0,0,.12), 0 6px 10px rgba(0,0,0,.09);
+}
+
+@media (hover:none){                                          /* disable on touch */
+  .shadow-large:hover{
+    transform:none;
+    box-shadow:0 10px 20px rgba(0,0,0,.07);
+  }
+}
+
+
+/* ────────────────  Floating “Email Me” button  ──────────────── */
+.email-fab{
+  position:fixed;
+  bottom:25px;
+  right:25px;
+  width:55px;
+  height:55px;
+  border-radius:50%;
+  background:#419cff;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.6em;          /* envelope icon size */
+  z-index:1000;
+  box-shadow:0 10px 20px rgba(0,0,0,.15);
+  transition:background .3s ease, transform .2s ease;
+}
+.email-fab:hover{
+  background:#2c2c2e;       /* on-hover contrast */
+  transform:translateY(-3px);
+  text-decoration:none;     /* remove link underline */
+}
+
+/* ─────────────  Modal overlay + content  ───────────── */
+.email-modal{
+  display:none;                                 /* hidden until opened */
+  position:fixed; inset:0;
+  background:rgba(0,0,0,.6);
+  z-index:999;                                  /* above everything except .email-fab */
+}
+.email-modal-content{
+  position:absolute;
+  top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  width:90%; max-width:500px;
+  background:#fff;
+  border-radius:20px;
+  padding:35px 25px 30px;
+  text-align:center;
+}
+.email-modal-content h3{
+  margin:0 0 20px; font-weight:500; color:#374054;
+}
+.email-modal-close{
+  position:absolute; top:15px; right:20px;
+  font-size:1.8em; color:#74808a; cursor:pointer;
+}
+.email-modal-close:hover{ color:#374054; }
+
+/* Use the same field/button styling you already defined for #contact-form */
+#quick-contact-form input,
+#quick-contact-form textarea{
+  width:100%; padding:10px; margin-bottom:10px;
+  border:none; border-radius:4px;
+  background:#f2f2f6; color:#444;
+}
+#quick-contact-form textarea{ height:150px; resize:none; }
+
+#quick-contact-form button{
+  width:100%; padding:10px;
+  border:none; border-radius:10px;
+  background:#419dff8d; color:#fff; font-weight:700;
+  box-shadow:0 10px 20px rgba(0,0,0,.035);
+  transition:.3s ease all;
+}
+#quick-contact-form button:hover{
+  background:#419cff;
+  box-shadow:0 10px 20px rgba(0,0,0,.08);
+}
+
+/* ----- lock the contact modal in place ----- */
+.email-modal-content:hover{
+  transform:translate(-50%,-50%) !important;   /* cancel lift / scale */
 }
